@@ -1,41 +1,8 @@
-// // src/server.js
-// import express from 'express';
-// import connectDB from './config/db.js';
-// import cors from 'cors';
-// import dotenv from 'dotenv';
-
-// dotenv.config();
-// connectDB();
-
-// const app = express();
-// app.use(cors());
-// app.use(express.json());
-
-// // Function to setup routes
-// const setupRoutes = async () => {
-//   const authRoutes = await import('./routes/authRoutes.js');
-//   const userRoutes = await import('./routes/userRoutes.js');
-//   const taskRoutes = await import('./routes/taskRoutes.js');
-
-//   app.use('/api/auth', authRoutes.default);
-//   app.use('/api/users', userRoutes.default);
-//   app.use('/api/tasks', taskRoutes.default);
-// };
-
-// // Initialize routes
-// setupRoutes().then(() => {
-//   const PORT = process.env.PORT || 5000;
-//   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-// }).catch(err => {
-//   console.error('Error setting up routes:', err);
-// });
-
-
-
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
+import morgan from 'morgan';  // Importing Morgan
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import taskRoutes from './routes/taskRoutes.js';
@@ -49,9 +16,10 @@ connectDB();
 // Initialize express app
 const app = express();
 
-// Middleware to enable CORS and JSON request body parsing
+// Middleware to enable CORS, JSON request body parsing, and logging
 app.use(cors());
 app.use(express.json());
+app.use(morgan('dev'));  // Using Morgan to log requests in 'dev' format
 
 // Routes
 app.use('/api/auth', authRoutes);

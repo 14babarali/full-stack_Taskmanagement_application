@@ -16,7 +16,7 @@ const createAdminUser = async () => {
 };
 
 // Connect to your MongoDB
-mongoose.connect('mongodb://localhost:27017/yourDatabaseName', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost:27017/task_management', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('MongoDB connected');
     return createAdminUser();

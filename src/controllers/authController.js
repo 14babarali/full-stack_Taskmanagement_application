@@ -1,3 +1,4 @@
+//controllers/authController.js
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -50,6 +51,34 @@ export const login = async (req, res) => {
 };
 
 
+// export const signup = async (req, res) => {
+//   const { username, email, password, role } = req.body;
+
+//   // Validate if the user is an admin
+//   const adminUser = await User.findById(req.user.id); // Assume req.user is the logged-in user
+
+//   if (!adminUser || adminUser.role !== 'admin') {
+//       return res.status(403).json({ message: 'Forbidden. Only admins can create users.' });
+//   }
+
+//   try {
+//       const hashedPassword = await bcrypt.hash(password, 10);
+//       const newUser = await User.create({
+//           username,
+//           email,
+//           password: hashedPassword,
+//           role, // Role is assigned here
+//       });
+
+//       res.status(201).json({ message: 'User created successfully', userId: newUser._id });
+//   } catch (error) {
+//       console.error('Error creating user:', error);
+//       res.status(500).json({ message: 'Error creating user', error });
+//   }
+// };
+
+
+
 export const signup = async (req, res) => {
   const { username, email, password, role } = req.body;
 
@@ -57,22 +86,26 @@ export const signup = async (req, res) => {
   const adminUser = await User.findById(req.user.id); // Assume req.user is the logged-in user
 
   if (!adminUser || adminUser.role !== 'admin') {
-      return res.status(403).json({ message: 'Forbidden. Only admins can create users.' });
+    return res.status(403).json({ message: 'Forbidden. Only admins can create users.' });
+  }
+
+  // Additional validation for role
+  if (!['manager', 'user'].includes(role)) {
+    return res.status(400).json({ message: 'Invalid role. Role must be either "manager" or "user".' });
   }
 
   try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = await User.create({
-          username,
-          email,
-          password: hashedPassword,
-          role, // Role is assigned here
-      });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await User.create({
+      username,
+      email,
+      password: hashedPassword,
+      role, // Role is assigned here
+    });
 
-      res.status(201).json({ message: 'User created successfully', userId: newUser._id });
+    res.status(201).json({ message: 'User created successfully', userId: newUser._id });
   } catch (error) {
-      console.error('Error creating user:', error);
-      res.status(500).json({ message: 'Error creating user', error });
+    console.error('Error creating user:', error);
+    res.status(500).json({ message: 'Error creating user', error });
   }
 };
-

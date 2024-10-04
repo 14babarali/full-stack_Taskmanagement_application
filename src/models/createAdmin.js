@@ -1,3 +1,4 @@
+//models/createAdmin.js
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import User from './User.js'; // Adjust the path if necessary

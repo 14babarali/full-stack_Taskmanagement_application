@@ -55,7 +55,7 @@ import { jwtDecode } from 'jwt-decode';
 import TaskList from './TaskList';
 import TaskForm from './TaskForm';
 import config from '../config'; 
-
+import UserCreationForm from './UserCreationForm';
 function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [role, setRole] = useState('');
@@ -84,6 +84,7 @@ function Dashboard() {
       
       {role === 'admin' && ( // Only admin can create tasks
         <div className="mt-6">
+          <UserCreationForm />
           <TaskForm fetchTasks={fetchTasks} />
         </div>
       )}

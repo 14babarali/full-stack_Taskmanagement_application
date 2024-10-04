@@ -7,7 +7,7 @@ import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import taskRoutes from './routes/taskRoutes.js';
 import connectDB from './config/db.js';
-
+import usersRouter from './routes/users.js'; 
 // Load environment variables
 dotenv.config();
 
@@ -26,7 +26,7 @@ app.use(morgan('dev'));  // Using Morgan to log requests in 'dev' format
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/tasks', taskRoutes);
-
+app.use('/api/users', usersRouter);
 // Global error handler (optional, for better error responses)
 app.use((err, req, res, next) => {
   console.error('Error:', err.message);

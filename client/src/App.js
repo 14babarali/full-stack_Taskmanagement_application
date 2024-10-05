@@ -24,18 +24,21 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
-import Dashboard from './components/Dashboard';
+import Dashboard from './pages/Dashboard';
 import NotFound from './components/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 import Signup from './components/Signup'; 
 import UserManagement from './components/UserManagement'; // Import UserManagement component
 import ManagerDashboard from './components/ManagerDashboard'; // Import ManagerDashboard
 import UserDashboard from './components/UserDashboard'; // Import UserDashboard
-
+import LandingPage from './pages/LandingPage';
 const App = () => {
     return (
         <Router>
             <Routes>
+            
+            <Route path="/" element={<LandingPage />} />
+
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<ProtectedRoute component={Signup} />} />
                 <Route path="/dashboard" element={<ProtectedRoute component={Dashboard} />} />

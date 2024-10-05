@@ -22,7 +22,9 @@ function Login() {
       
       // Redirect based on role
       if (userRole === 'admin') {
-        navigate('/user-management');
+        // navigate('/user-management');
+        navigate('/dashboard');
+
       } else if (userRole === 'manager') {
         navigate('/manager-dashboard');
       } else {

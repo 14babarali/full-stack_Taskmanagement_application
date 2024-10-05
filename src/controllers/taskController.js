@@ -1,14 +1,6 @@
-//controllers/taskController.js
+// controllers/taskController.js
 import Task from '../models/Task.js';
 
-// export const getTasks = async (req, res) => {
-//   try {
-//     const tasks = await Task.find({ createdBy: req.user.id });
-//     res.json(tasks);
-//   } catch (err) {
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// };
 export const getTasks = async (req, res) => {
   try {
     let tasks;
@@ -17,7 +9,7 @@ export const getTasks = async (req, res) => {
       tasks = await Task.find({ assignedTo: req.user.id }).populate('createdBy', 'username');
     } else {
       // Regular users see only their own tasks
-      tasks = await Task.find({ createdBy: req.user.id });
+      tasks = await Task.find({ createdBy: req.user.id }).populate('assignedTo', 'email'); // Populate assigned users for better response
     }
     res.json(tasks);
   } catch (err) {
@@ -25,28 +17,11 @@ export const getTasks = async (req, res) => {
   }
 };
 
-
-// export const createTask = async (req, res) => {
-//   const { title, description, dueDate } = req.body;
-//   try {
-//     const task = new Task({
-//       title,
-//       description,
-//       dueDate,
-//       createdBy: req.user.id,
-//     });
-//     await task.save();
-//     res.json(task);
-//   } catch (err) {
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// };
-
 export const createTask = async (req, res) => {
-  const { title, description, dueDate, assignedTo } = req.body; // Include assignedTo
+  const { title, description, dueDate, status, assignedUsers } = req.body; // Include assignedUsers
   try {
     // Check if the user has permission to assign tasks
-    if (req.user.role === 'user' && assignedTo) {
+    if (req.user.role === 'user' && assignedUsers && assignedUsers.length > 0) {
       return res.status(403).json({ message: 'You cannot assign tasks to others' });
     }
 
@@ -55,7 +30,7 @@ export const createTask = async (req, res) => {
       description,
       dueDate,
       createdBy: req.user.id,
-      assignedTo: assignedTo || req.user.id, // Assign to the user themselves if no one specified
+      assignedTo: assignedUsers || [req.user.id], // Assign to the user themselves if no one specified
     });
     await task.save();
     res.json(task);
@@ -63,22 +38,6 @@ export const createTask = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
-
-// export const updateTask = async (req, res) => {
-//   try {
-//     let task = await Task.findById(req.params.id);
-//     if (!task || task.createdBy.toString() !== req.user.id) {
-//       return res.status(403).json({ message: 'Unauthorized' });
-//     }
-
-//     task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
-//     res.json(task);
-//   } catch (err) {
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// };
-
 
 export const updateTask = async (req, res) => {
   try {
@@ -94,7 +53,6 @@ export const updateTask = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
 
 export const deleteTask = async (req, res) => {
   try {

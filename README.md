@@ -40,7 +40,7 @@ This is a full-stack Task Management Application that enables users to manage th
 ### Frontend
 
 - React
-- Redux (for state management)
+
 - React Router (for routing)
 - Tailwind CSS (for styling)
 - Vite (for development)
@@ -55,14 +55,13 @@ This is a full-stack Task Management Application that enables users to manage th
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- MongoDB (either local installation or MongoDB Atlas)
-
+- Node.js 
+- MongoDB  local 
 ### Frontend Setup
 
 1. Clone the repository:
     ```bash
-    git clone <repository-url>
+    git clone
     cd frontend
     ```
 
@@ -147,10 +146,4 @@ Contributions are welcome! Please follow these steps:
 ## License
 
 This project is licensed under the MIT License.
-
-## Notes
-
-- Be sure to replace `<repository-url>` and any other placeholders with the actual values.
-- You can also include screenshots or GIFs of the application in use to enhance the README.
-- Consider adding sections for known issues, future enhancements, or additional documentation if necessary.
-- Feel free to modify this template according to your project's specifics and requirements!
+

@@ -8,29 +8,26 @@ function TaskForm({ fetchTasks }) {
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [status, setStatus] = useState('pending');
-  const [assignedUsers, setAssignedUsers] = useState([]); // Initialize to an empty array
-  const [users, setUsers] = useState([]); // Initialize to an empty array
+  const [assignedUsers, setAssignedUsers] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem('token');
 
       try {
-        const response = await axios.get(`${config.apiBaseUrl}/api/users?exclude=admin`, {
+        const response = await axios.get(`${config.apiBaseUrl}/api/users`, {
           headers: { 'x-auth-token': token },
         });
-        
-        console.log(response.data); // Log the API response for debugging
-        // Ensure the data structure is correct
-        if (response.data && Array.isArray(response.data.users)) {
-          setUsers(response.data.users); // Adjust this according to your API response structure
+
+        // Check the response structure
+        if (response.data && Array.isArray(response.data)) {
+          setUsers(response.data); // Assuming the response is an array of users
         } else {
           console.error("Unexpected response structure", response.data);
-          alert('Failed to fetch users');
         }
       } catch (error) {
         console.error("Error fetching users", error);
-        alert('Failed to fetch users');
       }
     };
 
@@ -44,16 +41,16 @@ function TaskForm({ fetchTasks }) {
     try {
       await axios.post(
         `${config.apiBaseUrl}/api/tasks`,
-        { title, description, dueDate, status, assignedUsers }, // Pass assignedUsers as an array
+        { title, description, dueDate, status, assignedUsers },
         { headers: { 'x-auth-token': token } }
       );
-      fetchTasks(); // Refresh task list after adding
+      fetchTasks();
       // Reset form fields
       setTitle('');
       setDescription('');
       setDueDate('');
       setStatus('pending');
-      setAssignedUsers([]); // Reset assigned users
+      setAssignedUsers([]);
     } catch (error) {
       console.error("Error creating task", error);
       alert('Failed to create task');
@@ -68,7 +65,6 @@ function TaskForm({ fetchTasks }) {
   return (
     <form onSubmit={handleSubmit} className="p-4 bg-white rounded-md shadow-md">
       <h3 className="text-xl font-semibold">Create a New Task</h3>
-
       <div className="mt-4">
         <label className="block mb-1 text-sm font-medium text-gray-700">Title</label>
         <input
@@ -123,12 +119,11 @@ function TaskForm({ fetchTasks }) {
           value={assignedUsers}
           onChange={handleUserChange}
           className="block w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-          required
         >
           {users.length > 0 ? (
             users.map(user => (
               <option key={user._id} value={user._id}>
-                {user.email} {/* Assuming user object has an email field */}
+                {user.email} 
               </option>
             ))
           ) : (

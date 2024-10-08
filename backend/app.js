@@ -1,13 +1,12 @@
-// app.js
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import morgan from 'morgan';  // Importing Morgan
+import morgan from 'morgan'; // Importing Morgan
 import authRoutes from './routes/authRoutes.js';
-import userRoutes from './routes/userRoutes.js';
+import userRoutes from './routes/userRoutes.js';  // Assuming this handles core user management
 import taskRoutes from './routes/taskRoutes.js';
 import connectDB from './config/db.js';
-import usersRouter from './routes/users.js'; 
+
 // Load environment variables
 dotenv.config();
 
@@ -20,13 +19,13 @@ const app = express();
 // Middleware to enable CORS, JSON request body parsing, and logging
 app.use(cors());
 app.use(express.json());
-app.use(morgan('dev'));  // Using Morgan to log requests in 'dev' format
+app.use(morgan('dev')); // Using Morgan to log requests in 'dev' format
 
 // Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/tasks', taskRoutes);
-app.use('/api/users', usersRouter);
+app.use('/api/auth', authRoutes); // Authentication routes
+app.use('/api/users', userRoutes); // User management routes
+app.use('/api/tasks', taskRoutes); // Task management routes
+
 // Global error handler (optional, for better error responses)
 app.use((err, req, res, next) => {
   console.error('Error:', err.message);

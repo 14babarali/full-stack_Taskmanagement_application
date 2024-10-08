@@ -84,7 +84,7 @@ const Dashboard = () => {
 
         {/* Additional Components */}
         <AdminDashboard />
-        <Signup />
+        {/* <Signup /> */}
       </main>
     </div>
   );

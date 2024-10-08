@@ -1,31 +1,27 @@
-// models/Task.js
 import mongoose from 'mongoose';
 
 const TaskSchema = new mongoose.Schema({
-  title: { 
+  title: {
     type: String,
-    required: true
+    required: true,
   },
-  description: { 
-    type: String
+  description: {
+    type: String,
+    required: true,
   },
   dueDate: {
-    type: Date, 
-    required: true
+    type: Date,
+    required: true,
   },
-  status: { 
-    type: String, 
+  status: {
+    type: String,
     enum: ['pending', 'in-progress', 'completed'],
-    default: 'pending'
+    default: 'pending',
   },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'User' // User who created the task
-  },
-  assignedTo: [{
+  assignedUsers: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User' // Users to whom the task is assigned
-  }], // Changed this to an array
+    ref: 'User', // Reference to User model
+  }],
 }, { timestamps: true });
 
 export default mongoose.model('Task', TaskSchema);

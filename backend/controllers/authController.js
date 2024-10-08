@@ -49,16 +49,15 @@ export const login = async (req, res) => {
 };
 
 // Admin sign-up
+// User signup
 export const signup = async (req, res) => {
+  const { username, email, password, role } = req.body;
+
   try {
-    const { name, email, password, role } = req.body;
-    if (role !== 'admin') return res.status(403).json({ message: 'Only admin can register' });
-
-    const user = await User.create({ name, email, password, role });
-    const token = generateToken(user._id);
-
-    res.status(201).json({ token, user });
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+    const user = new User({ username, email, password, role });
+    await user.save();
+    res.status(201).json({ message: 'User created successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating user', error: error.message });
   }
 };

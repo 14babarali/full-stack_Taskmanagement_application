@@ -1,9 +1,9 @@
-// components/UserCreationForm.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import config from '../config'; 
 
 function UserCreationForm() {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('user');
@@ -14,12 +14,13 @@ function UserCreationForm() {
 
     try {
       await axios.post(
-        `${config.apiBaseUrl}/api/users/create`, // Ensure this matches your backend endpoint
-        { email, password, role },
+        `${config.apiBaseUrl}/api/users/signup`, // Ensure this matches your backend endpoint
+        { username, email, password, role },
         { headers: { 'x-auth-token': token } }
       );
       alert('User created successfully!');
       // Reset form or handle UI state after creation
+      setUsername('');
       setEmail('');
       setPassword('');
       setRole('user');
@@ -32,6 +33,17 @@ function UserCreationForm() {
   return (
     <form onSubmit={handleSubmit} className="p-4 bg-white rounded-md shadow-md">
       <h3 className="text-xl font-semibold">Create a New User</h3>
+      <div className="mt-4">
+        <label className="block mb-1 text-sm font-medium text-gray-700">Username</label>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="User Name"
+          className="block w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+          required
+        />
+      </div>
       <div className="mt-4">
         <label className="block mb-1 text-sm font-medium text-gray-700">Email</label>
         <input
